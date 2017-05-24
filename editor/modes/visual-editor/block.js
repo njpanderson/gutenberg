@@ -30,6 +30,7 @@ import {
 	getBlockOrder,
 	isBlockHovered,
 	isBlockSelected,
+	isBlockMultiSelected,
 	isTypingInBlock,
 } from '../../selectors';
 
@@ -71,10 +72,13 @@ class VisualEditorBlock extends wp.element.Component {
 	}
 
 	maybeHover() {
-		const { isTyping, isHovered, onHover } = this.props;
-		if ( isTyping && ! isHovered ) {
-			onHover();
+		const { isHovered, isSelected, isMultiSelected, onHover } = this.props;
+
+		if ( isHovered || isSelected || isMultiSelected ) {
+			return;
 		}
+
+		onHover();
 	}
 
 	maybeStartTyping() {
@@ -166,14 +170,15 @@ class VisualEditorBlock extends wp.element.Component {
 			return null;
 		}
 
-		const { isHovered, isSelected, isTyping, focus } = this.props;
+		const { isHovered, isSelected, isMultiSelected, isTyping, focus } = this.props;
 		const showUI = isSelected && ( ! isTyping || ! focus.collapsed );
 		const className = classnames( 'editor-visual-editor__block', {
 			'is-selected': showUI,
+			'is-multi-selected': isMultiSelected,
 			'is-hovered': isHovered,
 		} );
 
-		const { onSelect, onHover, onMouseLeave, onFocus, onInsertAfter } = this.props;
+		const { onSelect, onMouseLeave, onFocus, onInsertAfter } = this.props;
 
 		// Determine whether the block has props to apply to the wrapper
 		let wrapperProps;
@@ -190,8 +195,16 @@ class VisualEditorBlock extends wp.element.Component {
 				onClick={ this.selectAndStopPropagation }
 				onFocus={ onSelect }
 				onKeyDown={ this.removeOrDeselect }
-				onMouseEnter={ onHover }
-				onMouseMove={ this.maybeHover }
+				onMouseDown={ this.props.onSelectionStart }
+				onTouchStart={ this.props.onSelectionStart }
+				onMouseMove={ () => {
+					this.props.onSelectionChange();
+					this.maybeHover();
+				} }
+				onTouchMove={ this.props.onSelectionChange }
+				onMouseUp={ this.props.onSelectionEnd }
+				onTouchEnd={ this.props.onSelectionEnd }
+				onMouseEnter={ this.maybeHover }
 				onMouseLeave={ onMouseLeave }
 				className={ className }
 				data-type={ block.blockType }
@@ -236,6 +249,7 @@ export default connect(
 			nextBlock: getNextBlock( state, ownProps.uid ),
 			block: getBlock( state, ownProps.uid ),
 			isSelected: isBlockSelected( state, ownProps.uid ),
+			isMultiSelected: isBlockMultiSelected( state, ownProps.uid ),
 			isHovered: isBlockHovered( state, ownProps.uid ),
 			focus: getBlockFocus( state, ownProps.uid ),
 			isTyping: isTypingInBlock( state, ownProps.uid ),
