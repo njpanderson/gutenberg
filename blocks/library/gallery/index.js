@@ -66,11 +66,6 @@ registerBlockType( 'core/gallery', {
 
 	controls: [
 		{
-			icon: 'format-image',
-			title: wp.i18n.__( 'Edit Gallery' ),
-			onClick: editMediaLibrary,
-		},
-		{
 			icon: 'align-left',
 			title: wp.i18n.__( 'Align left' ),
 			isActive: ( { align } ) => 'left' === align,
@@ -93,6 +88,12 @@ registerBlockType( 'core/gallery', {
 			title: wp.i18n.__( 'Wide width' ),
 			isActive: ( { align } ) => 'wide' === align,
 			onClick: toggleAlignment( 'wide' ),
+		},
+		{
+			icon: 'edit',
+			title: wp.i18n.__( 'Edit Gallery' ),
+			onClick: editMediaLibrary,
+			leftDivider: true,
 		},
 	],
 
