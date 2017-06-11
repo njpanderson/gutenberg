@@ -65,36 +65,40 @@ registerBlockType( 'core/gallery', {
 	},
 
 	controls: [
-		{
-			icon: 'align-left',
-			title: wp.i18n.__( 'Align left' ),
-			isActive: ( { align } ) => 'left' === align,
-			onClick: toggleAlignment( 'left' ),
-		},
-		{
-			icon: 'align-center',
-			title: wp.i18n.__( 'Align center' ),
-			isActive: ( { align } ) => ! align || 'center' === align,
-			onClick: toggleAlignment( 'center' ),
-		},
-		{
-			icon: 'align-right',
-			title: wp.i18n.__( 'Align right' ),
-			isActive: ( { align } ) => 'right' === align,
-			onClick: toggleAlignment( 'right' ),
-		},
-		{
-			icon: 'align-full-width',
-			title: wp.i18n.__( 'Wide width' ),
-			isActive: ( { align } ) => 'wide' === align,
-			onClick: toggleAlignment( 'wide' ),
-		},
-		{
-			icon: 'edit',
-			title: wp.i18n.__( 'Edit Gallery' ),
-			onClick: editMediaLibrary,
-			leftDivider: true,
-		},
+		[
+			{
+				icon: 'align-left',
+				title: wp.i18n.__( 'Align left' ),
+				isActive: ( { align } ) => 'left' === align,
+				onClick: toggleAlignment( 'left' ),
+			},
+			{
+				icon: 'align-center',
+				title: wp.i18n.__( 'Align center' ),
+				isActive: ( { align } ) => ! align || 'center' === align,
+				onClick: toggleAlignment( 'center' ),
+			},
+			{
+				icon: 'align-right',
+				title: wp.i18n.__( 'Align right' ),
+				isActive: ( { align } ) => 'right' === align,
+				onClick: toggleAlignment( 'right' ),
+			},
+			{
+				icon: 'align-full-width',
+				title: wp.i18n.__( 'Wide width' ),
+				isActive: ( { align } ) => 'wide' === align,
+				onClick: toggleAlignment( 'wide' ),
+			},
+		],
+		[
+			{
+				icon: 'edit',
+				title: wp.i18n.__( 'Edit Gallery' ),
+				onClick: editMediaLibrary,
+				leftDivider: true,
+			},
+		],
 	],
 
 	edit( { attributes, setAttributes } ) {

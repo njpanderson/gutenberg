@@ -230,6 +230,13 @@ class VisualEditorBlock extends wp.element.Component {
 			wrapperProps = blockType.getEditWrapperProps( block.attributes );
 		}
 
+		// Ensure blockType controls are a nested array
+		if ( blockType.controls &&
+				( blockType.controls[ 0 ] && ! blockType.controls[ 0 ].length )
+		) {
+			blockType.controls = [ blockType.controls ];
+		}
+
 		// Disable reason: Each block can be selected by clicking on it
 		/* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/onclick-has-role, jsx-a11y/click-events-have-key-events */
 		return (
@@ -264,11 +271,13 @@ class VisualEditorBlock extends wp.element.Component {
 							<BlockSwitcher uid={ block.uid } />
 							{ !! blockType.controls && (
 								<Toolbar
-									controls={ blockType.controls.map( ( control ) => ( {
-										...control,
-										onClick: () => control.onClick( block.attributes, this.setAttributes ),
-										isActive: control.isActive ? control.isActive( block.attributes ) : false,
-									} ) ) } />
+									controls={ blockType.controls.map( ( set ) => (
+										set.map( ( control ) => ( {
+											...control,
+											onClick: () => control.onClick( block.attributes, this.setAttributes ),
+											isActive: control.isActive ? control.isActive( block.attributes ) : false,
+										} ) )
+									) ) } />
 							) }
 							<Slot name="Formatting.Toolbar" />
 						</div>

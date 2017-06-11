@@ -1,4 +1,18 @@
-.components-toolbar {
+.gutenberg .components-toolbar,
+.gutenberg .components-toolbar ul {
+	display: flex;
+	list-style: none;
+
+	li {
+		margin: 0;
+
+		&:nth-child(1n+2) ul {
+			margin-left: 10px;
+		}
+	}
+}
+
+.components-toolbar ul {
 	margin: 0;
 	border: 1px solid $light-gray-500;
 	box-shadow: $shadow-popover;
