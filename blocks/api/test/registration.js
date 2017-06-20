@@ -41,18 +41,18 @@ describe( 'blocks', () => {
 	describe( 'registerBlockType()', () => {
 		it( 'should reject numbers', () => {
 			const block = registerBlockType( 999 );
-			expect( console.error ).to.have.been.calledWith( 'Block names must be strings.' );
+			expect( console.error ).to.have.been.calledWith( 'Error in entity "999" (block) property "name". Value must be a string.' );
 			expect( block ).to.be.undefined();
 		} );
 
 		it( 'should reject blocks without a namespace', () => {
-			const block = registerBlockType( 'doing-it-wrong' );
+			const block = registerBlockType( 'doing-it-wrong', defaultBlockType );
 			expect( console.error ).to.have.been.calledWith( 'Block names must contain a namespace prefix. Example: my-plugin/my-custom-block' );
 			expect( block ).to.be.undefined();
 		} );
 
 		it( 'should reject blocks with invalid characters', () => {
-			const block = registerBlockType( 'still/_doing_it_wrong' );
+			const block = registerBlockType( 'still/_doing_it_wrong', defaultBlockType );
 			expect( console.error ).to.have.been.calledWith( 'Block names must contain a namespace prefix. Example: my-plugin/my-custom-block' );
 			expect( block ).to.be.undefined();
 		} );
@@ -72,14 +72,14 @@ describe( 'blocks', () => {
 
 		it( 'should reject blocks without a save function', () => {
 			const block = registerBlockType( 'my-plugin/fancy-block-5' );
-			expect( console.error ).to.have.been.calledWith( 'A "save" function must be created within the block settings.' );
+			expect( console.error ).to.have.been.calledWith( 'Error in entity "my-plugin/fancy-block-5" (block) property "save". Value is required.' );
 			expect( block ).to.be.undefined();
 		} );
 
 		it( 'should reject blocks with an invalid edit function', () => {
 			const blockType = { save: noop, edit: 'not-a-function' },
 				block = registerBlockType( 'my-plugin/fancy-block-6', blockType );
-			expect( console.error ).to.have.been.calledWith( 'The "edit" property must be a valid function.' );
+			expect( console.error ).to.have.been.calledWith( 'Error in entity "my-plugin/fancy-block-6" (block) property "edit". Value must be a function.' );
 			expect( block ).to.be.undefined();
 		} );
 
