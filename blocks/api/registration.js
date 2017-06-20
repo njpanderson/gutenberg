@@ -1,6 +1,11 @@
 /* eslint no-console: [ 'error', { allow: [ 'error' ] } ] */
 
 /**
+ * Internal dependencies
+ */
+import PropTypes from './validate-object-props';
+
+/**
  * Block settings keyed by block name.
  *
  * @type {Object}
@@ -32,6 +37,17 @@ let defaultBlockName;
  *                             registered; otherwise `undefined`.
  */
 export function registerBlockType( name, settings ) {
+	const validation = PropTypes.validate( {
+		name: [ PropTypes.string.isRequired, name ],
+		save: [ PropTypes.func.isRequired, settings && settings.save ],
+		edit: [ PropTypes.func, settings && settings.edit ],
+	}, 'block', name );
+
+	if ( validation !== true ) {
+		console.error( validation );
+		return;
+	}
+
 	if ( typeof name !== 'string' ) {
 		console.error(
 			'Block names must be strings.'
