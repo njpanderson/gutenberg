@@ -4,9 +4,10 @@
  * Each property in the passed argument should be a key/value pair of the name
  * of the variable being tested, and its testing function with the value in an array.
  * @example
- * import PropTypes from './validate-object-props';
- * const validation = PropTypes.validate( {
- * 	name: [ PropTypes.string.isRequired, name ],
+ * import Validator from './validate-object-props';
+ * const validation = Validator.validate( {
+ * 	name: [ Validator.string.isRequired, name ],
+ * 	save: [ Validator.func.isRequired, settings.save ],
  * }, name, 'block' );
  */
 
