@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import PropTypes from './validate-object-props';
+import Validator from './validate-object-props';
 
 /**
  * Block settings keyed by block name.
@@ -37,10 +37,10 @@ let defaultBlockName;
  *                             registered; otherwise `undefined`.
  */
 export function registerBlockType( name, settings ) {
-	const validation = PropTypes.validate( {
-		name: [ PropTypes.string.isRequired, name ],
-		save: [ PropTypes.func.isRequired, settings && settings.save ],
-		edit: [ PropTypes.func, settings && settings.edit ],
+	const validation = Validator.validate( {
+		name: [ Validator.string.isRequired, name ],
+		save: [ Validator.func.isRequired, settings && settings.save ],
+		edit: [ Validator.func, settings && settings.edit ],
 	}, 'block', name );
 
 	if ( validation !== true ) {
